@@ -1,0 +1,184 @@
+body {
+	margin: 0;
+	background-color: #000;
+	color: #fff;
+	font-family: Monospace;
+	font-size: 83px;
+	line-height: 84px;
+	overscroll-behavior: none;
+}
+.ableft {
+	position: absolute;
+	top: 0;
+	right:50px;
+	width: 1400px;
+	height: 2430px;
+	box-shadow: 0px 0px 12px #cb7149;
+	border: 1px solid #cb7149;
+	font-family: Helvetica, sans-serif;
+	text-align: center;
+	line-height: normal;
+	cursor: default;
+	border-radius: 10px;
+}
+a {
+	color: #ff0;
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+button {
+	cursor: pointer;
+	text-transform: uppercase;
+}
+
+#info {
+	position: absolute;
+	top: 0px;
+	width: 100%;
+	padding: 10px;
+	box-sizing: border-box;
+	text-align: center;
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	pointer-events: none;
+	z-index: 1; /* TODO Solve this in HTML */
+}
+
+a, button, input, select {
+	pointer-events: auto;
+}
+
+.lil-gui {
+	z-index: 2 !important; /* TODO Solve this in HTML */
+}
+
+@media all and ( max-width: 640px ) {
+	.lil-gui.root { 
+		right: auto;
+		top: auto;
+		max-height: 50%;
+		max-width: 80%;
+		bottom: 0;
+		left: 0;
+	}
+}
+
+#overlay {
+	position: absolute;
+	font-size: 16px;
+	z-index: 2;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	background: rgba(0,0,0,0.7);
+}
+
+	#overlay button {
+		background: transparent;
+		border: 0;
+		border: 1px solid rgb(255, 255, 255);
+		border-radius: 4px;
+		color: #ffffff;
+		padding: 12px 18px;
+		text-transform: uppercase;
+		cursor: pointer;
+	}
+
+#notSupported {
+	width: 50%;
+	margin: auto;
+	background-color: #f00;
+	margin-top: 20px;
+	padding: 10px;
+}
+a {
+	color: black;
+}
+
+#menu {
+	position: absolute;
+	bottom: 20px;
+	width: 100%;
+	text-align: center;
+}
+
+.element {
+	width: 140px;
+	height: 243px;
+	box-shadow: 0px 0px 12px #cb7149;
+	border: 1px solid #cb7149;
+	font-family: Helvetica, sans-serif;
+	text-align: center;
+	line-height: normal;
+	cursor: default;
+	border-radius: 10px;
+}
+
+.element:hover {
+	box-shadow: 0px 0px 12px #cb7149;
+	border: 1px solid #07cadd;
+	background-image: (url"./img/0-Fool-icon.png");
+}
+
+	.element .number {
+		position: absolute;
+		top: 20px;
+		right: 20px;
+		font-size: 12px;
+		color: while;
+	}
+
+	.element .symbol {
+		position: absolute;
+		top: 40px;
+		left: 0px;
+		right: 0px;
+		font-size: 60px;
+		font-weight: bold;
+		color: rgba(255,255,255,0.75);
+		text-shadow: 0 0 10px #cb7149;
+	}
+
+	.element .details {
+		position: absolute;
+		bottom: 15px;
+		left: 0px;
+		right: 0px;
+		font-size: 20px;
+		color: while;
+	}
+
+button {
+	color: #f7c75d;
+	background: transparent;
+	outline: 1px solid #f7c75d;
+	border: 0px;
+	padding: 5px 10px;
+	cursor: pointer;
+}
+
+button:hover {
+	background-color:#cb7149;
+}
+
+button:active {
+	color: #000000;
+	background-color: cb7149(0,255,255,0.75);
+}
+
+img
+{
+	height: auto;
+	width: auto;
+}

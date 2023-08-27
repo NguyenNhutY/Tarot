@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<link type="text/css" rel="stylesheet" href="main.css">
+	</head>
+	<body>
+
+		<div id="container"></div>
+		<div id="menu">
+			<button id="table">TABLE</button>
+			<button id="sphere"></button>
+			<button id="helix"></button>
+			<button id="grid">GRID</button>
+		</div>
+
+		<!-- Import maps polyfill -->
+		<!-- Remove this when import maps will be widely supported -->
+		<script async src="https://unpkg.com/es-module-shims@1.3.6/dist/es-module-shims.js"></script>
+
+		<script type="importmap">
+			{
+				"imports": {
+					"three": "./build/three.module.js",
+					"three/addons/": "./jsm/"
+				}
+			}
+		</script>
+
+		<script type="module">
+
+			import * as THREE from 'three';
+
+			import { TWEEN } from 'three/addons/libs/tween.module.min.js';
+			import { TrackballControls } from 'three/addons/controls/TrackballControls.js';
+			import { CSS3DRenderer, CSS3DObject } from 'three/addons/renderers/CSS3DRenderer.js';
+
+			const table = [
+				'F', 'The Flood', '', 1, 1,
+                'Ma', 'The Magician', '', 2, 1,
+				'HP', 'The High Priestess', '', 3, 1,
+				'ES', 'The Empress', '', 4, 1,
+				'ER', 'The Emperor', '', 5, 1,
+				'HR', 'The Hierophant', '', 6, 1,
+				'LV', 'The Lovers', '', 7, 1,
+				'CR', 'The Chariot', '', 8, 1,
+				'S', 'Strength', '', 9, 1,
+				'F', 'Fluorine', '', 10, 1,
+				'HM', 'The Hermit', '', 11, 1,
+				'WF', 'The Wheel of Fortune', '', 1, 2,
+				'J', 'Justice', '', 2, 2,
+				'HG', 'The Hanged Man', '', 3, 2,
+				'D', 'Death', '', 4, 2,
+				'T', 'Temperance', '', 5, 2,
+				'DV', 'The Devil', '', 6, 2,
+				'TW', 'The Tower', '', 7, 2,
+				'SR', 'The Star', '', 8, 2,
+				'M', 'The Moon', '', 9, 2,
+				'SN', 'The Sun', '', 10, 2,
+				'W', 'The World', '', 11, 2,
+				'AC', 'Ace of Cups', '', 1, 3,
+				'2C', '2 of Cups', '', 2, 3,
+				'3C', '3 of Cups', '', 3, 3,
+				'4C', '4 of Cups', '', 4, 3,
+				'5C', '5 of Cups', '', 5, 3,
+				'6C', '6 of Cups', '', 6, 3,
+				'7C', '7 of Cups', '', 7, 3,
+				'8C', '8 of Cups ', '', 8, 3,
+				'9C', '9 of Cups', '', 9, 3,
+				'10C', '10 of Cups', '', 10, 3,
+                'PC', 'Page of Cups', '', 1,4 ,
+				'KnC', 'Knight of Cups', '', 2, 4,
+				'QC', 'Queen of Cups', '', 3, 4,
+				'KC', 'King of Cups', '', 4, 4,
+				'AP', 'Ace of Pentacles', '', 1, 5,
+				'2P', '2 of Pentacles', '', 2, 5,
+				'3P', '3 of Pentacles', '', 3, 5,
+				'4P', '4 of Pentacles', '', 4, 5,
+				'5P', '5 of Pentacles', '', 5, 5,
+				'6P', '6 of Pentacles', '', 6, 5,
+				'7P', '7 of Pentacles', '', 7, 5,
+				'8P', '8 of Pentacles', '', 8, 5,
+				'9P', '9 of Pentacles', '', 9, 5,
+				'10P', '10 of Pentacles', '', 10, 5,
+                'PP', 'Page of Pentacles', '', 1, 6,
+				'KnP', 'Knight of Pentacles', '', 2, 6,
+				'QP', 'Queen of Pentacles', '', 3, 6,
+				'KP', 'King of Pentacles', '', 4, 6,
+				'AS', 'Ace of Swords', '', 1, 7,
+				'2S', '2 of Swords', '', 2, 7,
+				'3S', '3 of Swords', '', 3, 7,
+				'4S', '4 of Swords', '', 4, 7,
+				'5S', '5 of Swords', '', 5, 7,
+				'6S', '6 of Swords', '', 6, 7,
+				'7S', '7 of Swords', '', 7, 7,
+				'8S', '8 of Swords', '', 8, 7,
+				'9S', '9 of Swords', '', 9, 7,
+				'10S', '10 of Swords', '', 10, 7,
+                'PS', 'Page of Swords', '', 1, 8,
+				'KnS', 'Knight of Swords', '', 2, 8,
+				'QS', 'Queen of Swords', '', 3, 8,
+				'KS', 'King of Swords', '', 4, 8,
+				'AW', 'Ace of Wands', '', 1, 9,
+				'2W', '2 of Wands', '', 2, 9,
+				'3W', '3 of Wands', '', 3, 9,
+				'4W', '4 of Wands', '', 4, 9,
+				'5W', '5 of Wands', '', 5, 9,
+				'6W', '6 of Wands', '', 6, 9,
+				'7W', '7 of Wands', '', 7, 9,
+				'8W', '8 of Wands', '', 8, 9,
+				'9W', '9 of Wands', '', 9, 9,
+				'10W', '10 of Wands', '', 10, 9,
+				'PW', 'Page of Wands', '', 1, 10,
+				'KnW', 'Knight of Wands', '', 2, 10,
+				'QW', 'Queen of Wands', '', 3, 10,
+				'KW', 'King of Wands', '', 4, 10,
+
+			];
+
+			let camera, scene, renderer;
+			let controls;
+
+			const objects = [];
+			const targets = { table: [], sphere: [], helix: [], grid: [] };
+
+			init();
+			animate();
+
+			function init() {
+
+				camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 10000 );
+				camera.position.z = 3000;
+
+				scene = new THREE.Scene();
+
+				// table
+				
+				for ( let i = 0; i < table.length; i += 5 ) {
+
+					const element = document.createElement( 'div' );
+					element.className = 'element';
+					element.style.backgroundColor = 'rgba(255, 230, 0,' + ( Math.random() * 0.5 + 0.25 ) + ')';
+					element.onmouseover =function ()
+					{
+						element.innerHTML = '<img src="./img/'+ i +'.png">';
+					}
+					
+					const symbol = document.createElement( 'div' );
+					symbol.className = 'symbol';
+					symbol.textContent = table[ i ];
+					element.appendChild( symbol );
+
+					const details = document.createElement( 'div' );
+					details.className = 'details';
+					details.innerHTML = table[ i + 1 ] + '<br>' + table[ i + 2 ];
+					element.appendChild( details );
+					
+					const objectCSS = new CSS3DObject( element );
+					objectCSS.position.x = Math.random() * 4000 - 2000;
+					objectCSS.position.y = Math.random() * 4000 - 2000;
+					objectCSS.position.z = Math.random() * 4000 - 2000;
+					scene.add( objectCSS );
+
+					objects.push( objectCSS );
+
+					//
+
+					const object = new THREE.Object3D();
+					object.position.x = ( table[ i + 3 ] * 140 ) - 1330;
+					object.position.y = - ( table[ i + 4 ] * 180 ) + 990;
+
+					targets.table.push( object );
+
+				}
+
+				// sphere
+
+				const vector = new THREE.Vector3();
+
+				for ( let i = 0, l = objects.length; i < l; i ++ ) {
+
+					const phi = Math.acos( - 1 + ( 2 * i ) / l );
+					const theta = Math.sqrt( l * Math.PI ) * phi;
+
+					const object = new THREE.Object3D();
+
+					object.position.setFromSphericalCoords( 800, phi, theta );
+
+					vector.copy( object.position ).multiplyScalar( 2 );
+
+					object.lookAt( vector );
+
+					targets.sphere.push( object );
+
+				}
+
+				// helix
+
+				for ( let i = 0, l = objects.length; i < l; i ++ ) {
+
+					const theta = i * 0.175 + Math.PI;
+					const y = - ( i * 8 ) + 450;
+
+					const object = new THREE.Object3D();
+
+					object.position.setFromCylindricalCoords( 900, theta, y );
+
+					vector.x = object.position.x * 2;
+					vector.y = object.position.y;
+					vector.z = object.position.z * 2;
+
+					object.lookAt( vector );
+
+					targets.helix.push( object );
+
+				}
+
+				// grid
+
+				for ( let i = 0; i < objects.length; i ++ ) {
+
+					const object = new THREE.Object3D();
+
+					object.position.x = ( ( i % 5 ) * 400 ) - 800;
+					object.position.y = ( - ( Math.floor( i / 5 ) % 5 ) * 400 ) + 800;
+					object.position.z = ( Math.floor( i / 25 ) ) * 1000 - 2000;
+
+					targets.grid.push( object );
+
+				}
+
+				//
+
+				renderer = new CSS3DRenderer();
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				document.getElementById( 'container' ).appendChild( renderer.domElement );
+
+				//
+
+				controls = new TrackballControls( camera, renderer.domElement );
+				controls.minDistance = 500;
+				controls.maxDistance = 6000;
+				controls.addEventListener( 'change', render );
+
+				const buttonTable = document.getElementById( 'table' );
+				buttonTable.addEventListener( 'click', function () {
+
+					transform( targets.table, 2000 );
+
+				} );
+
+				const buttonSphere = document.getElementById( 'sphere' );
+				buttonSphere.addEventListener( 'click', function () {
+
+					transform( targets.sphere, 2000 );
+
+				} );
+
+				const buttonHelix = document.getElementById( 'helix' );
+				buttonHelix.addEventListener( 'click', function () {
+
+					transform( targets.helix, 2000 );
+
+				} );
+
+				const buttonGrid = document.getElementById( 'grid' );
+				buttonGrid.addEventListener( 'click', function () {
+
+					transform( targets.grid, 2000 );
+
+				} );
+
+				transform( targets.table, 2000 );
+
+				//
+
+				window.addEventListener( 'resize', onWindowResize );
+
+			}
+
+			function transform( targets, duration ) {
+
+				TWEEN.removeAll();
+
+				for ( let i = 0; i < objects.length; i ++ ) {
+
+					const object = objects[ i ];
+					const target = targets[ i ];
+
+					new TWEEN.Tween( object.position )
+						.to( { x: target.position.x, y: target.position.y, z: target.position.z }, Math.random() * duration + duration )
+						.easing( TWEEN.Easing.Exponential.InOut )
+						.start();
+
+					new TWEEN.Tween( object.rotation )
+						.to( { x: target.rotation.x, y: target.rotation.y, z: target.rotation.z }, Math.random() * duration + duration )
+						.easing( TWEEN.Easing.Exponential.InOut )
+						.start();
+
+				}
+
+				new TWEEN.Tween( this )
+					.to( {}, duration * 2 )
+					.onUpdate( render )
+					.start();
+
+			}
+
+			function onWindowResize() {
+
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+
+				renderer.setSize( window.innerWidth, window.innerHeight );
+
+				render();
+
+			}
+
+			function animate() {
+
+				requestAnimationFrame( animate );
+
+				TWEEN.update();
+
+				controls.update();
+
+			}
+
+			function render() {
+
+				renderer.render( scene, camera );
+
+			}
+		</script>
+	</body>
+</html>
